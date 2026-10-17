@@ -1,0 +1,37 @@
+---
+description: Strict TypeScript — explicit interfaces, no any
+globs: **/*.{ts,tsx}
+alwaysApply: false
+---
+
+# TypeScript
+
+- `strict` is on. Ban `any`; use `unknown` and narrow.
+- Define an explicit `interface` for component props and domain models. Do not inline large anonymous object types.
+
+```ts
+// ❌ BAD
+export function TreatmentCard(props: any) {
+  return <h2>{props.name}</h2>;
+}
+
+// ✅ GOOD
+export interface TreatmentCardProps {
+  name: string;
+  durationMinutes: number;
+  priceGbp: number;
+}
+
+export function TreatmentCard({
+  name,
+  durationMinutes,
+  priceGbp,
+}: TreatmentCardProps) {
+  return (
+    <article>
+      <h2>{name}</h2>
+      <p>{durationMinutes} min · {formatGbp(priceGbp)}</p>
+    </article>
+  );
+}
+```

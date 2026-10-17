@@ -1,0 +1,31 @@
+---
+description: Spa aesthetic, next/image, and mobile-first layout
+globs: **/*.{tsx,css}
+alwaysApply: false
+---
+
+# Visual language
+
+Calm, high-end spa: slate neutrals, generous spacing, warm subtle accents (`stone`/`amber` at low saturation). Mobile-first. Avoid harsh contrast, neon, and dense UI.
+
+# Images
+
+Always use `next/image`. Pair with `object-cover` and a descriptive `alt`.
+
+```tsx
+// ❌ BAD
+<img src="/treatment.jpg" />
+
+// ✅ GOOD
+<Image
+  src="/treatment.jpg"
+  alt="Hot stone massage in a calm treatment room"
+  fill
+  className="object-cover"
+  sizes="(max-width: 768px) 100vw, 50vw"
+/>
+```
+
+# Layout
+
+Start from a single-column padded layout (`px-4`, `py-8`), then add `sm:` / `lg:` columns. Use shadcn/ui primitives before custom controls.

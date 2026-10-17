@@ -1,68 +1,83 @@
 import Image from "next/image";
+import { featuredTreatments } from "@/data/treatments";
+import { formatGbp } from "@/lib/currency";
+import type { Treatment } from "@/types/treatment";
+
+interface TreatmentPreviewProps {
+  treatment: Treatment;
+}
+
+function TreatmentPreview({ treatment }: TreatmentPreviewProps) {
+  return (
+    <article className="flex flex-col gap-3 rounded-2xl border border-border bg-card p-6 shadow-sm">
+      <h3 className="font-heading text-2xl font-semibold tracking-tight">
+        {treatment.name}
+      </h3>
+      <p className="text-sm text-muted-foreground">
+        {treatment.durationMinutes} minutes · {formatGbp(treatment.priceGbp)}
+      </p>
+      <p className="text-base leading-7 text-foreground/80">{treatment.summary}</p>
+    </article>
+  );
+}
 
 export default function Home() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
+    <div className="flex flex-1 flex-col">
+      <header className="px-4 py-6 sm:px-8">
+        <p className="text-sm tracking-[0.2em] text-muted-foreground uppercase">
+          Camberley · Surrey
+        </p>
+        <p className="mt-2 font-heading text-xl font-semibold">
+          Helen&apos;s Massage &amp; Wellness
+        </p>
+      </header>
+
+      <main className="mx-auto flex w-full max-w-5xl flex-1 flex-col gap-16 px-4 pb-20 sm:px-8">
+        <section className="grid gap-10 lg:grid-cols-2 lg:items-center">
+          <div className="flex flex-col gap-6">
+            <h1 className="font-heading text-4xl leading-tight font-semibold tracking-tight sm:text-5xl">
+              Space to unwind, restore and feel like yourself again.
+            </h1>
+            <p className="max-w-md text-lg leading-8 text-muted-foreground">
+              A calm, high-end practice offering therapeutic massage in the heart
+              of Camberley. Treatments from {formatGbp(65)}.
+            </p>
             <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
+              href="#treatments"
+              className="inline-flex h-12 w-fit items-center justify-center rounded-full bg-primary px-6 text-sm tracking-wide text-primary-foreground uppercase transition-colors hover:bg-primary/90"
             >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
+              View treatments
+            </a>
+          </div>
+          <div className="relative aspect-[4/5] overflow-hidden rounded-3xl bg-accent sm:aspect-[5/4] lg:aspect-[4/5]">
             <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
+              src="/spa-still-life.svg"
+              alt="Soft towels, warm light and botanicals in a quiet treatment room"
+              fill
+              priority
+              className="object-cover"
+              sizes="(max-width: 1024px) 100vw, 50vw"
             />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
+          </div>
+        </section>
+
+        <section id="treatments" className="flex flex-col gap-8">
+          <div className="max-w-xl">
+            <h2 className="font-heading text-3xl font-semibold tracking-tight">
+              Featured treatments
+            </h2>
+            <p className="mt-3 text-muted-foreground">
+              All prices in pounds sterling. Book a visit or enquire for a
+              personalised recommendation.
+            </p>
+          </div>
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {featuredTreatments.map((treatment) => (
+              <TreatmentPreview key={treatment.id} treatment={treatment} />
+            ))}
+          </div>
+        </section>
       </main>
     </div>
   );

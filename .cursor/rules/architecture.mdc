@@ -1,0 +1,29 @@
+---
+description: Stack, domain, and component architecture for Helen's Wellness
+alwaysApply: true
+---
+
+# Architecture
+
+- Stack: Next.js App Router with `src/`, TypeScript, Tailwind CSS, shadcn/ui.
+- Domain: Helen's Massage & Wellness Practice (UK). Copy, dates, and legal wording use British English.
+- Currency: GBP only. Format with `formatGbp` from `@/lib/currency`. Never show `$` or other currencies.
+
+# Server vs client
+
+Default to Server Components. Add `'use client'` only when the file needs state, effects, or browser events.
+
+```tsx
+// ❌ BAD — client boundary with no interactivity
+"use client";
+export function Price({ amountGbp }: { amountGbp: number }) {
+  return <p>{formatGbp(amountGbp)}</p>;
+}
+
+// ✅ GOOD — server component
+export function Price({ amountGbp }: { amountGbp: number }) {
+  return <p>{formatGbp(amountGbp)}</p>;
+}
+```
+
+Keep client leaves small. Fetch and compose data on the server; pass serialisable props down.
