@@ -1,7 +1,11 @@
+export interface TreatmentOption {
+  durationMinutes: number;
+  priceGbp: number;
+}
 export interface Treatment {
   id: string;
   name: string;
-  durationMinutes: number;
-  priceGbp: number;
+  options: TreatmentOption[];
   summary: string;
+  imageSrc: string
 }

@@ -2,6 +2,7 @@ import { Navbar } from '@/components/navbar';
 import { PolicyBanner } from '@/components/policy-banner';
 
 export default function BookPage() {
+  const bookingUrl = process.env.NEXT_PUBLIC_SQUARE_BOOKING_URL || "";
   return (
     <div className="min-h-screen bg-slate-50/50">
       <Navbar />
@@ -14,7 +15,14 @@ export default function BookPage() {
         <PolicyBanner />
 
         <div className="mt-8 rounded-lg border bg-white p-6 shadow-sm">
-          <div className="flex min-h-[500px] w-full items-center justify-center rounded border border-dashed border-slate-300 bg-slate-50 p-8 text-center">
+          {bookingUrl ?(
+            <iframe
+              src={bookingUrl}
+              className="w-full min-h-650px border-0 rounded-lg"
+              title="Square Appointments Booking Widget"
+              />
+          ) : (
+          <div className="flex min-h-600px w-full items-center justify-center rounded border border-dashed border-slate-300 bg-slate-50 p-8 text-center">
             <div className="space-y-2">
               <p className="font-semibold text-slate-700">Square Appointments Calendar Embed Container</p>
               <p className="max-w-md text-sm text-slate-500">
@@ -22,6 +30,7 @@ export default function BookPage() {
               </p>
             </div>
           </div>
+          )}
         </div>
       </main>
     </div>

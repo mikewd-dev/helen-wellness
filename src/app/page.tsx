@@ -1,7 +1,11 @@
+import { Navbar } from "@/components/navbar";
 import Image from "next/image";
 import { featuredTreatments } from "@/data/treatments";
 import { formatGbp } from "@/lib/currency";
 import type { Treatment } from "@/types/treatment";
+import { Button } from '@/components/ui/button';
+import { PolicyBanner } from "@/components/policy-banner";
+import Link from "next/link";
 
 interface TreatmentPreviewProps {
   treatment: Treatment;
@@ -9,14 +13,37 @@ interface TreatmentPreviewProps {
 
 function TreatmentPreview({ treatment }: TreatmentPreviewProps) {
   return (
-    <article className="flex flex-col gap-3 rounded-2xl border border-border bg-card p-6 shadow-sm">
-      <h3 className="font-heading text-2xl font-semibold tracking-tight">
-        {treatment.name}
-      </h3>
-      <p className="text-sm text-muted-foreground">
-        {treatment.durationMinutes} minutes · {formatGbp(treatment.priceGbp)}
-      </p>
-      <p className="text-base leading-7 text-foreground/80">{treatment.summary}</p>
+    <article className="flex flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
+      <div className="relative aspect-4/3 w-full bg-accent">
+        <Image
+          src={treatment.imageSrc}
+          alt={treatment.name}
+          fill
+          className="object-cover"
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+        />
+      </div>
+
+      <div className="flex flex-1 flex-col gap-3 p-6">
+        <h3 className="font-heading text-xl font-semibold tracking-tight">
+          {treatment.name}
+        </h3>
+        
+        <div className="flex flex-col gap-1 text-sm text-muted-foreground">
+          {treatment.options.map((option) => (
+            <p key={option.durationMinutes}>
+              {option.durationMinutes} minutes · {formatGbp(option.priceGbp)}
+            </p>
+          ))}
+        </div>
+
+        <p className="mt-auto text-sm leading-6 text-foreground/80">
+          {treatment.summary}
+        </p>
+        <Button asChild className="bg-slate-900 text-white hover:bg-slate-800">
+          <Link href="/book">Book Treatment</Link>
+        </Button>
+      </div>
     </article>
   );
 }
@@ -24,16 +51,22 @@ function TreatmentPreview({ treatment }: TreatmentPreviewProps) {
 export default function Home() {
   return (
     <div className="flex flex-1 flex-col">
-      <header className="px-4 py-6 sm:px-8">
+       <Navbar />
+       <main className="container mx-auto max-w-4xl px-4 py-8">
+       <PolicyBanner />
+      {/* <header className="px-4 py-6 sm:px-8">
         <p className="text-sm tracking-[0.2em] text-muted-foreground uppercase">
           Camberley · Surrey
         </p>
         <p className="mt-2 font-heading text-xl font-semibold">
           Helen&apos;s Massage &amp; Wellness
         </p>
-      </header>
+      </header> */}
+
+      </main>
 
       <main className="mx-auto flex w-full max-w-5xl flex-1 flex-col gap-16 px-4 pb-20 sm:px-8">
+       
         <section className="grid gap-10 lg:grid-cols-2 lg:items-center">
           <div className="flex flex-col gap-6">
             <h1 className="font-heading text-4xl leading-tight font-semibold tracking-tight sm:text-5xl">
@@ -41,7 +74,7 @@ export default function Home() {
             </h1>
             <p className="max-w-md text-lg leading-8 text-muted-foreground">
               A calm, high-end practice offering therapeutic massage in the heart
-              of Camberley. Treatments from {formatGbp(65)}.
+              of Camberley. Treatments from {formatGbp(50)}.
             </p>
             <a
               href="#treatments"
@@ -50,7 +83,7 @@ export default function Home() {
               View treatments
             </a>
           </div>
-          <div className="relative aspect-[4/5] overflow-hidden rounded-3xl bg-accent sm:aspect-[5/4] lg:aspect-[4/5]">
+          <div className="relative aspect-4/5 overflow-hidden rounded-3xl bg-accent sm:aspect-5/4 lg:aspect-4/5">
             <Image
               src="/spa-still-life.svg"
               alt="Soft towels, warm light and botanicals in a quiet treatment room"
@@ -72,7 +105,7 @@ export default function Home() {
               personalised recommendation.
             </p>
           </div>
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-2">
             {featuredTreatments.map((treatment) => (
               <TreatmentPreview key={treatment.id} treatment={treatment} />
             ))}
