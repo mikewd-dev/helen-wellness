@@ -1,4 +1,6 @@
+'use client'
 import { Navbar } from "@/components/navbar";
+import { Footer } from "@/components/footer";
 import Image from "next/image";
 import { featuredTreatments } from "@/data/treatments";
 import { formatGbp } from "@/lib/currency";
@@ -6,6 +8,9 @@ import type { Treatment } from "@/types/treatment";
 import { Button } from '@/components/ui/button';
 import { PolicyBanner } from "@/components/policy-banner";
 import Link from "next/link";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faChevronUp } from "@fortawesome/free-solid-svg-icons";
+
 
 interface TreatmentPreviewProps {
   treatment: Treatment;
@@ -28,7 +33,7 @@ function TreatmentPreview({ treatment }: TreatmentPreviewProps) {
         <h3 className="font-heading text-xl font-semibold tracking-tight">
           {treatment.name}
         </h3>
-        
+
         <div className="flex flex-col gap-1 text-sm text-muted-foreground">
           {treatment.options.map((option) => (
             <p key={option.durationMinutes}>
@@ -51,22 +56,13 @@ function TreatmentPreview({ treatment }: TreatmentPreviewProps) {
 export default function Home() {
   return (
     <div className="flex flex-1 flex-col">
-       <Navbar />
-       <main className="container mx-auto max-w-4xl px-4 py-8">
-       <PolicyBanner />
-      {/* <header className="px-4 py-6 sm:px-8">
-        <p className="text-sm tracking-[0.2em] text-muted-foreground uppercase">
-          Camberley · Surrey
-        </p>
-        <p className="mt-2 font-heading text-xl font-semibold">
-          Helen&apos;s Massage &amp; Wellness
-        </p>
-      </header> */}
-
+      <Navbar />
+      <main className="container mx-auto max-w-4xl px-4 py-8">
+        <PolicyBanner />
       </main>
 
       <main className="mx-auto flex w-full max-w-5xl flex-1 flex-col gap-16 px-4 pb-20 sm:px-8">
-       
+
         <section className="grid gap-10 lg:grid-cols-2 lg:items-center">
           <div className="flex flex-col gap-6">
             <h1 className="font-heading text-4xl leading-tight font-semibold tracking-tight sm:text-5xl">
@@ -111,7 +107,26 @@ export default function Home() {
             ))}
           </div>
         </section>
+        <Footer />
+
       </main>
+      <div className="flex w-full justify-end px-3 py-6">
+        <Link href="/#" className="hover:text-slate-900 transition-colors">
+
+
+          <button
+            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+            aria-label="Scroll to top"
+          >
+
+            <FontAwesomeIcon
+              icon={faChevronUp}
+              className="text-slate-600 hover:text-slate-900 transition-colors"
+              size="6x"
+            />
+          </button>
+        </Link>
+      </div>
     </div>
   );
 }
